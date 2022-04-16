@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, ImageBackground, Pressable } from 'react-native';
 
 // BackgraundImage for StartScreen
@@ -44,6 +44,10 @@ export default class Start extends React.Component {
 						{/* choose name */}
 						<View style={styles.textInputBox}>
 							<TextInput
+								accessible={true}
+								accessibilityLabel='Write something!'
+								accessibilityHint='Lets you insert your name for the chat.'
+
 								style={styles.textInput}
 								onChangeText={(name) => this.setState({ name })}
 								value={this.state.name}
@@ -54,33 +58,70 @@ export default class Start extends React.Component {
 						<View style={styles.textBox}>
 							<Text style={styles.changeColor}>Choose Background Color:</Text>
 						</View>
+
 						{/* choose backgroundColor for ChatScreen */}
 						<View style={styles.changeColorBox}>
 							<TouchableOpacity
-								style={styles.color1}
+								accessible={true}
+								accessibilityLabel='Tab me!'
+								accessibilityHint='Lets you choose a background color for the chat.'
+								accessibilityRole='radio'
+								style={{
+									backgroundColor: this.colors.color1,
+									height: 70,
+									width: 70,
+									borderRadius: 35
+								}}
 								onPress={() => this.changeBgColor(this.colors.color1)}
-							>
-							</TouchableOpacity>
+							/>
 							<TouchableOpacity
-								style={styles.color2}
+								accessible={true}
+								accessibilityLabel='Tab me!'
+								accessibilityHint='Lets you choose a background color for the chat.'
+								accessibilityRole='radio'
+								style={{
+									backgroundColor: this.colors.color2,
+									height: 70,
+									width: 70,
+									borderRadius: 35
+								}}
 								onPress={() => this.changeBgColor(this.colors.color2)}
-							>
-							</TouchableOpacity>
+							/>
 							<TouchableOpacity
-								style={styles.color3}
+								accessible={true}
+								accessibilityLabel='Tab me!'
+								accessibilityHint='Lets you choose a background color for the chat.'
+								accessibilityRole='radio'
+								style={{
+									backgroundColor: this.colors.color3,
+									height: 70,
+									width: 70,
+									borderRadius: 35
+								}}
 								onPress={() => this.changeBgColor(this.colors.color3)}
-							>
-							</TouchableOpacity>
+							/>
 							<TouchableOpacity
-								style={styles.color4}
+								accessible={true}
+								accessibilityLabel='Tab me!'
+								accessibilityHint='Lets you choose a background color for the chat.'
+								accessibilityRole='radio'
+								style={{
+									backgroundColor: this.colors.color4,
+									height: 70,
+									width: 70,
+									borderRadius: 35
+								}}
 								onPress={() => this.changeBgColor(this.colors.color4)}
-							>
-							</TouchableOpacity>
+							/>
 						</View>
 
 						{/* button to navigate to ChatScreen */}
 						<View style={styles.startButtonBox}>
 							<Pressable
+								accessible={true}
+								accessibilityLabel='Tab me!'
+								accessibilityHint='Lets you navigate to the chat screen.'
+								accessibilityRole='button'
 								style={styles.startButton}
 								onPress={() => this.props.navigation.navigate('Chat', { name: this.state.name, bgColor: this.state.bgColor })}>
 								<Text style={styles.startButtonText}>Start Chatting</Text>
@@ -155,30 +196,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'space-evenly'
 
-	},
-	color1: {
-		backgroundColor: '#090C08',
-		height: 70,
-		width: 70,
-		borderRadius: 35
-	},
-	color2: {
-		backgroundColor: '#474056',
-		height: 70,
-		width: 70,
-		borderRadius: 35
-	},
-	color3: {
-		backgroundColor: '#8A95A5',
-		height: 70,
-		width: 70,
-		borderRadius: 35
-	},
-	color4: {
-		backgroundColor: '#B9C6AE',
-		height: 70,
-		width: 70,
-		borderRadius: 35
 	},
 
 	startButton: {
