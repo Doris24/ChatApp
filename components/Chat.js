@@ -86,9 +86,10 @@ export default class Start extends React.Component {
 		// set name as title of the chat
 		this.props.navigation.setOptions({ title: name });
 
-		this.getMessages();
+		// this.getMessages();
 
 		NetInfo.fetch().then(connection => {
+			console.log('==============connection', connection);
 			if (connection.isConnected) {
 				this.setState({ isConnected: true });
 				console.log('online');
@@ -101,9 +102,6 @@ export default class Start extends React.Component {
 				this.authUnsubscribe = firebase.auth().onAuthStateChanged((user) => {
 					if (!user) {
 						firebase.auth().signInAnonymously();
-
-						//User is just shortly not yet set at the moment of parsing the code.
-						//set the user directly from the response 
 						// try {
 						// 	let response = await firebase.auth().signInAnonymously();
 						// 	user = response.user
@@ -212,10 +210,12 @@ export default class Start extends React.Component {
 	}
 
 	componentWillUnmount() {
-		//stop authentication
-		this.authUnsubscribe();
-		//stop listening to changes
-		this.unsubscribe();
+		if (this.state.isConnected) {
+			//stop authentication
+			this.authUnsubscribe();
+			//stop listening to changes
+			this.unsubscribe();
+		}
 	}
 
 	render() {
