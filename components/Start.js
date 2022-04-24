@@ -166,6 +166,7 @@ const styles = StyleSheet.create({
 	box: {
 		backgroundColor: '#FFF',
 		height: '44%',
+		minHeight: 275,
 		width: '88%',
 		padding: '5%',
 		justifyContent: "space-around",

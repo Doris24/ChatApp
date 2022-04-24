@@ -19,7 +19,7 @@ export default class Start extends React.Component {
 		super();
 
 		this.state = {
-			massages: [],
+			messages: [],
 			uid: 0,
 			user: {
 				_id: '',
@@ -61,7 +61,7 @@ export default class Start extends React.Component {
 
 	async saveMessages() {
 		try {
-			await AsyncStorage.setItems('messages', JSON.stringify(this.state.messages));
+			await AsyncStorage.setItem('messages', JSON.stringify(this.state.messages));
 		} catch (error) {
 			console.log(error.message);
 		}
@@ -99,28 +99,32 @@ export default class Start extends React.Component {
 					.onSnapshot(this.onCollectionUpdate);
 
 				//authorization
-				this.authUnsubscribe = firebase.auth().onAuthStateChanged((user) => {
-					if (!user) {
-						firebase.auth().signInAnonymously();
-						// try {
-						// 	let response = await firebase.auth().signInAnonymously();
-						// 	user = response.user
-						// } catch (error) {
-						// 	console.error(error)
+				this.authUnsubscribe = firebase
+					.auth()
+					.onAuthStateChanged(async (user) => {
+						// if (!user) {
+						// 	return await firebase.auth().signInAnonymously();
 						// }
-					}
+						try {
+							let response = await firebase.auth().signInAnonymously();
+							user = response.user
+							console.log(user);
+						} catch (error) {
+							console.error(error)
+						}
+						// }
 
-					this.setState({
-						uid: user.uid,
-						messages: [],
-						user: {
-							_id: user.uid,
-							name: name,
-							avatar: 'https://placeimg.com/140/140/any',
-						},
+						this.setState({
+							uid: user.uid,
+							// messages: [],
+							user: {
+								_id: user.uid,
+								name: name,
+								avatar: 'https://placeimg.com/140/140/any',
+							},
+						});
+
 					});
-
-				});
 				//save messages locally
 				this.saveMessages();
 
