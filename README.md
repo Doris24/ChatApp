@@ -8,12 +8,12 @@ A chat app for mobile devices build with React Native. The app will provide user
     - Enter the chat
 - Chat screen:
     - All users can communicate in a single chat room
-    - Users are able to send
-        - text messages
-        - take a photo
-        - choose a saved photo
-        - send their location data
-        - view the communication offline
+    - Ability to
+        - Send text messages
+        - Take a photo
+        - Choose a saved photo
+        - Send their location data
+        - View the communication offline
 
 ## Technologies
 - React Native
@@ -26,8 +26,8 @@ A chat app for mobile devices build with React Native. The app will provide user
 - Node.js and npm
 - Expo Cli
 - Expo Go App (Phone or Emulator)
-- either:
-    - a working Android/IOS Device or
+- Either:
+    - A working Android/IOS Device
     - Emulator 
 ### Steps
 - Download the repository
