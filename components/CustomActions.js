@@ -14,9 +14,6 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 
 export default class CustomActions extends React.Component {
-	// constructor(props) {
-	// 	super();
-	// }
 
 	pickImage = async () => {
 		const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
