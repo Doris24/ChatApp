@@ -4,6 +4,8 @@ import { StyleSheet, View, Text, Platform, KeyboardAvoidingView } from 'react-na
 //Gifted Chat
 import { Bubble, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
 
+import MapView from 'react-native-maps';
+
 //import firebase
 const firebase = require('firebase');
 require('firebase/firestore');
@@ -13,7 +15,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 //NetInfo to check if user is off or online
 import NetInfo from '@react-native-community/netinfo';
 
-export default class Start extends React.Component {
+import CustomActions from './CustomActions';
+
+export default class Chat extends React.Component {
 
 	constructor(props) {
 		super();
@@ -27,6 +31,8 @@ export default class Start extends React.Component {
 				avatar: '',
 			},
 			isConnected: false,
+			image: null,
+			location: null
 		};
 
 		// Your web app's Firebase configuration
@@ -86,7 +92,33 @@ export default class Start extends React.Component {
 		// set name as title of the chat
 		this.props.navigation.setOptions({ title: name });
 
-		// this.getMessages();
+		//authorization
+		this.authUnsubscribe = firebase
+			.auth()
+			.onAuthStateChanged(async (user) => {
+				// if (!user) {
+				// 	return await firebase.auth().signInAnonymously();
+				// }
+				try {
+					let response = await firebase.auth().signInAnonymously();
+					user = response.user
+					console.log(user);
+				} catch (error) {
+					console.error(error)
+				}
+				// }
+
+				this.setState({
+					uid: user.uid,
+					// messages: [],
+					user: {
+						_id: user.uid,
+						name: name,
+						avatar: 'https://placeimg.com/140/140/any',
+					},
+				});
+
+			});
 
 		NetInfo.fetch().then(connection => {
 			console.log('==============connection', connection);
@@ -98,33 +130,7 @@ export default class Start extends React.Component {
 					.orderBy("createdAt", "desc")
 					.onSnapshot(this.onCollectionUpdate);
 
-				//authorization
-				this.authUnsubscribe = firebase
-					.auth()
-					.onAuthStateChanged(async (user) => {
-						// if (!user) {
-						// 	return await firebase.auth().signInAnonymously();
-						// }
-						try {
-							let response = await firebase.auth().signInAnonymously();
-							user = response.user
-							console.log(user);
-						} catch (error) {
-							console.error(error)
-						}
-						// }
 
-						this.setState({
-							uid: user.uid,
-							// messages: [],
-							user: {
-								_id: user.uid,
-								name: name,
-								avatar: 'https://placeimg.com/140/140/any',
-							},
-						});
-
-					});
 				//save messages locally
 				this.saveMessages();
 
@@ -153,6 +159,9 @@ export default class Start extends React.Component {
 					name: data.user.name,
 					avatar: data.user.avatar,
 				},
+				image: data.image || null,
+				location: data.location || null,
+
 			});
 		});
 		this.setState({
@@ -165,10 +174,14 @@ export default class Start extends React.Component {
 		const message = this.state.messages[0];
 
 		this.referenceChatMessages.add({
+			// uid: this.state.uid,
 			_id: message._id,
-			text: message.text || "",
+			text: message.text || '',
 			createdAt: message.createdAt,
 			user: this.state.user,
+			image: message.image || null,
+			location: message.location || null,
+
 		});
 	}
 
@@ -222,6 +235,33 @@ export default class Start extends React.Component {
 		}
 	}
 
+	renderCustomActions = (props) => {
+		return <CustomActions {...props} />;
+	};
+
+	renderCustomView(props) {
+		const { currentMessage } = props;
+		if (currentMessage.location) {
+			return (
+				<MapView
+					style={{
+						width: 150,
+						height: 100,
+						borderRadius: 13,
+						margin: 3
+					}}
+					region={{
+						latitude: currentMessage.location.latitude,
+						longitude: currentMessage.location.longitude,
+						latitudeDelta: 0.0922,
+						longitudeDelta: 0.0421,
+					}}
+				/>
+			);
+		}
+		return null;
+	}
+
 	render() {
 
 		// get bgColor from StartScreen
@@ -234,15 +274,19 @@ export default class Start extends React.Component {
 			}}>
 				{/* renders the chat interface */}
 				<GiftedChat
+					renderActions={this.renderCustomActions}
 					renderBubble={this.renderBubble.bind(this)}
 					renderInputToolbar={this.renderInputToolbar.bind(this)}
+					renderCustomView={this.renderCustomView}
 					messages={this.state.messages}
 					onSend={messages => this.onSend(messages)}
+					placeholder='Send message'
 					user={{
 						_id: this.state.user._id,
 						name: this.state.name,
 						avatar: this.state.user.avatar,
 					}}
+
 				/>
 				{/* if OS is Android, then wrap 'view' in 'KeyboardAvoidingView', else do nothing */}
 				{Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}

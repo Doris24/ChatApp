@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 //navigate between screens
 import Start from './components/Start';
 import Chat from './components/Chat';
+import CustomActions from './components/CustomActions';
 
 //react-navigator
 // import react native gesture handler
@@ -17,6 +18,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
 export default class App extends React.Component {
+
+	constructor(props) {
+		super();
+	}
+
 
 	render() {
 		return (
