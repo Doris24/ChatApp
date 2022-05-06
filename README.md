@@ -3,16 +3,17 @@ A chat app for mobile devices build with React Native. The app will provide user
 
 ## Key Features
 - Start screen:
-    - input a user name
-    - choose a background color 
-    - enter the chat
+    - Input a user name
+    - Choose a background color 
+    - Enter the chat
 - Chat screen:
-    - all users can communicate in a single chat room
-    - users are able to send
+    - All users can communicate in a single chat room
+    - Users are able to send
         - text messages
         - take a photo
         - choose a saved photo
-        - send their location
+        - send their location data
+        - view the communication offline
 
 ## Technologies
 - React Native
@@ -29,9 +30,11 @@ A chat app for mobile devices build with React Native. The app will provide user
     - a working Android/IOS Device or
     - Emulator 
 ### Steps
-- run 'npm install'
-- run 'expo start'
-- start the App: 
+- Download the repository
+- Navigate to root folder
+- Run `npm install` to install the required packages
+- Run `expo start` or `npm start`
+- Start the App: 
     - Phone: scan QR code with the Expo Go App
     - Emulator: click 'Run on Android device/emulator' in the Emulator
 
